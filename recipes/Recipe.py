@@ -10,6 +10,7 @@ class Recipe:
     colors: List[int]
     creates: Dict[int, int] #item_id: amount
     reagents: Dict[int, int] #item_id: amount
+    season_id: int = None
 
     def __post_init__(self):
         self.id = int(self.id)

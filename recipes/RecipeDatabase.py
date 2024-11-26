@@ -32,6 +32,7 @@ class RecipeDatabase:
 
     def add_recipe(self, recipe):
         if recipe.id in self.recipes:
+            print(f"Item {recipe.id} already exists, aborting add operation")
             return
             #raise Exception(f"Item {recipe.id} already exists")
         if not isinstance(recipe.id, int):
@@ -46,3 +47,18 @@ class RecipeDatabase:
             # Fetch the item from the database
             raise Exception(f"Recipe {recipe_id} not found")
         return self.recipes[recipe_id]
+    
+    def get_all_recipes(self, skill=None, season_id=None,sort_recipes=False):
+        
+        recipes = list(self.recipes.values())
+        if skill:
+            recipes = [recipe for recipe in recipes if recipe.skill == skill]
+        if not season_id is None:
+            if season_id == 0:
+                recipes = [recipe for recipe in recipes if recipe.season_id == None]
+            else:
+                recipes = [recipe for recipe in recipes if recipe.season_id == season_id]
+            
+        if sort_recipes:
+            recipes = sorted(recipes, key=lambda recipe: recipe.colors[0])
+        return recipes
