@@ -9,7 +9,7 @@ class ItemDatabase:
         self.file_path = os.path.join(os.path.dirname(__file__), 'items.json')
         self.items: Dict[int, Item] = dict()
         self.load()
-        print(f"Loaded {len(self.items)} items from {self.file_path}")
+        # print(f"Loaded {len(self.items)} items from {self.file_path}")
     
     def load(self):
         # Load items from a JSON file

@@ -9,7 +9,7 @@ class RecipeDatabase:
         self.file_path = os.path.join(os.path.dirname(__file__), 'recipes.json')
         self.recipes: Dict[int, Recipe] = dict()
         self.load()
-        print(f"Loaded {len(self.recipes)} recipes from {self.file_path}")
+        # print(f"Loaded {len(self.recipes)} recipes from {self.file_path}")
 
     def load(self):
         # Load items from a JSON file

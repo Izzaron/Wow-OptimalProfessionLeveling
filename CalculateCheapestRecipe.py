@@ -1,3 +1,4 @@
+from collections import defaultdict
 import json
 from math import ceil
 
@@ -14,7 +15,7 @@ class RecipeValuator:
     def __init__(self):
         self.item_db = ItemDatabase()
         self.recipe_db = RecipeDatabase()
-        self.known_professions = [186,164] #186 is mining, 164 is blacksmithing
+        self.known_professions = [164,186] #164 is blacksmithing, 186 is mining
 
     def get_cheapest_recipe_for_level(self, level: int):
         candidates = self.get_candidate_recipes(level)
@@ -23,10 +24,10 @@ class RecipeValuator:
         for recipe in candidates:
             price = self.get_recipe_cost(recipe)
             probability = self.get_levelup_probability(recipe.colors,level)
-            print(format_copper_price(price),str(probability*100)+'%',end=' ')
+            # print(format_copper_price(price),str(probability*100)+'%',end=' ')
             nr_required = ceil(1/probability)
             price = price * nr_required
-            self.print_recipe(recipe)
+            # self.print_recipe(recipe)
             if cheapest == None or price < cheapest[0]:
                 cheapest = (price,recipe)
         return cheapest
@@ -67,6 +68,23 @@ class RecipeValuator:
                 
         return item.price
 
+    def get_all_recipe_reagents(self,recipe):
+        reagents = recipe.reagents.items()
+        reagent_list = defaultdict(int)
+        for reagent_id,amount in reagents:
+            item = self.item_db.getItem(reagent_id)
+            if item.created_by:
+                recipe = self.recipe_db.get_recipe(item.created_by)
+                if recipe.skill in self.known_professions:
+                    sub_reagents = self.get_all_recipe_reagents(recipe)
+                    for sub_reagent_id,sub_amount in sub_reagents.items():
+                        reagent_list[sub_reagent_id] += sub_amount*amount
+                else:
+                    reagent_list[item.id] += amount
+            else:
+                reagent_list[item.id] += amount
+        return reagent_list
+
     def print_recipe(self,recipe):
         print(recipe.name,end=' ')
         print(f"\033[38;2;255;128;64m{recipe.colors[0]}\033[0m",end=' ') #ff8040
@@ -79,4 +97,15 @@ if __name__ == '__main__':
     
     rv = RecipeValuator()
 
-    rv.get_cheapest_recipe_for_level(1)
+    # price,cheapest = rv.get_cheapest_recipe_for_level(1)
+    # rv.print_recipe(cheapest)
+    # for reagent,amount in rv.get_all_recipe_reagents(cheapest).items():
+    #     print(amount,rv.item_db.getItem(reagent).name)
+    
+    rdb = RecipeDatabase()
+    recipes = rdb.get_all_recipes(skill=164,season_id=0,sort_recipes=True)
+    for recipe in recipes[10:20]:
+        print(recipe.name + ":",end=' ')
+        for reagent,amount in rv.get_all_recipe_reagents(recipe).items():
+            print(amount,rv.item_db.getItem(reagent).name,end=', ')
+        print('')
