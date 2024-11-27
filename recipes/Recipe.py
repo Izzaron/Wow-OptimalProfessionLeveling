@@ -3,7 +3,7 @@ from typing import Dict, List
 
 @dataclass
 class Recipe:
-    id: int
+    recipe_id: int
     name: str
     skill: int
     trainning_cost: int
@@ -13,7 +13,7 @@ class Recipe:
     season_id: int = None
 
     def __post_init__(self):
-        self.id = int(self.id)
+        self.recipe_id = int(self.recipe_id)
         self.name = str(self.name)
         self.skill = int(self.skill)
         self.trainning_cost = int(self.trainning_cost)

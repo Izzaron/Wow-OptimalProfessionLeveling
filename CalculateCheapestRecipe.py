@@ -80,9 +80,9 @@ class RecipeValuator:
                     for sub_reagent_id,sub_amount in sub_reagents.items():
                         reagent_list[sub_reagent_id] += sub_amount*amount
                 else:
-                    reagent_list[item.id] += amount
+                    reagent_list[item.item_id] += amount
             else:
-                reagent_list[item.id] += amount
+                reagent_list[item.item_id] += amount
         return reagent_list
 
     def print_recipe(self,recipe):

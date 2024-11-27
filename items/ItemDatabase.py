@@ -39,13 +39,13 @@ class ItemDatabase:
         return self.items[item_id]
     
     def addItem(self, item: Item, reagents=None):
-        if item.id in self.items:
+        if item.item_id in self.items:
             return
             #raise Exception(f"Item {item.id} already exists")
-        if not isinstance(item.id, int):
+        if not isinstance(item.item_id, int):
             raise Exception("Item ID must be an integer")
         # Add an item to the database
-        self.items[item.id] = item
+        self.items[item.item_id] = item
         if reagents and isinstance(reagents, dict):
             for reagent_id, amount in reagents.items():
                 item.reagents[reagent_id] = amount

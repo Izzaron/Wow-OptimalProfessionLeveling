@@ -31,14 +31,14 @@ class RecipeDatabase:
         return len(self.recipes)
 
     def add_recipe(self, recipe):
-        if recipe.id in self.recipes:
-            print(f"Item {recipe.id} already exists, aborting add operation")
+        if recipe.recipe_id in self.recipes:
+            print(f"Item {recipe.recipe_id} already exists, aborting add operation")
             return
             #raise Exception(f"Item {recipe.id} already exists")
-        if not isinstance(recipe.id, int):
+        if not isinstance(recipe.recipe_id, int):
             raise Exception("Item ID must be an integer")
         # Add an item to the database
-        self.recipes[recipe.id] = recipe
+        self.recipes[recipe.recipe_id] = recipe
 
     def get_recipe(self, recipe_id):
         recipe_id = int(recipe_id)
