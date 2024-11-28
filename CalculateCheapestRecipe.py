@@ -102,10 +102,15 @@ if __name__ == '__main__':
     # for reagent,amount in rv.get_all_recipe_reagents(cheapest).items():
     #     print(amount,rv.item_db.getItem(reagent).name)
     
-    rdb = RecipeDatabase()
-    recipes = rdb.get_all_recipes(skill=164,season_id=0,sort_recipes=True)
-    for recipe in recipes[10:20]:
-        print(recipe.name + ":",end=' ')
-        for reagent,amount in rv.get_all_recipe_reagents(recipe).items():
-            print(amount,rv.item_db.getItem(reagent).name,end=', ')
-        print('')
+    # rdb = RecipeDatabase()
+    # recipes = rdb.get_all_recipes(skill=164,season_id=0,sort_recipes=True)
+    # for recipe in recipes[10:20]:
+    #     print(recipe.name + ":",end=' ')
+    #     for reagent,amount in rv.get_all_recipe_reagents(recipe).items():
+    #         print(amount,rv.item_db.getItem(reagent).name,end=', ')
+    #     print('')
+
+    item_id = 3486
+    idb = ItemDatabase()
+    item = idb.getItem(item_id)
+    print(item)

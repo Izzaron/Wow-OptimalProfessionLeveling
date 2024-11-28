@@ -40,6 +40,7 @@ class ItemDatabase:
         if item_id not in self.items:
             # Fetch the item from the database
             self.items[item_id] = self.downloader.load_item(item_id, ItemParser)
+            self.save()
         return self.items[item_id]
     
     def addItem(self, item: Item, reagents=None):
