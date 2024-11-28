@@ -1,7 +1,10 @@
 from typing import Dict
 from dataclasses import asdict
 import json
+
+from .ItemParser import ItemParser
 from .Item import Item
+from ItemDataDownloader import ItemDataDownloader
 import os
 
 class ItemDatabase:
@@ -9,6 +12,7 @@ class ItemDatabase:
         self.file_path = os.path.join(os.path.dirname(__file__), 'items.json')
         self.items: Dict[int, Item] = dict()
         self.load()
+        self.downloader = ItemDataDownloader()
         # print(f"Loaded {len(self.items)} items from {self.file_path}")
     
     def load(self):
@@ -35,7 +39,7 @@ class ItemDatabase:
         # Return an item by its ID
         if item_id not in self.items:
             # Fetch the item from the database
-            raise Exception(f"Item {item_id} not found")
+            self.items[item_id] = self.downloader.load_item(item_id, ItemParser)
         return self.items[item_id]
     
     def addItem(self, item: Item, reagents=None):
