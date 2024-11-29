@@ -10,7 +10,7 @@ class ItemParser:
 
     def parse(content) -> Item:
 
-        pattern = re.compile(rf'\$.extend\(g_items\[(\d+)\],(.*?)\);', re.DOTALL)
+        pattern = re.compile(rf'\$\.extend\(g_items\[(\d+)\],(.*?)\);', re.DOTALL)
         match = pattern.search(content)
         if not match:
             raise ValueError(f"Could not find item data in {content}")

@@ -2,8 +2,8 @@ from typing import Dict
 from dataclasses import asdict
 import json
 
-from .ItemParser import ItemParser
 from .Item import Item
+from .ItemParser import ItemParser
 from ItemDataDownloader import ItemDataDownloader
 import os
 

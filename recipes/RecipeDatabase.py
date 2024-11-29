@@ -2,6 +2,8 @@ from typing import Dict
 from dataclasses import asdict
 import json
 from .Recipe import Recipe
+from .RecipeParser import RecipeParser
+from ItemDataDownloader import ItemDataDownloader
 import os
 
 class RecipeDatabase:
@@ -9,6 +11,7 @@ class RecipeDatabase:
         self.file_path = os.path.join(os.path.dirname(__file__), 'recipes.json')
         self.recipes: Dict[int, Recipe] = dict()
         self.load()
+        self.downloader = ItemDataDownloader()
         # print(f"Loaded {len(self.recipes)} recipes from {self.file_path}")
 
     def load(self):
@@ -45,7 +48,8 @@ class RecipeDatabase:
         # Return an item by its ID
         if recipe_id not in self.recipes:
             # Fetch the item from the database
-            raise Exception(f"Recipe {recipe_id} not found")
+            self.recipes[recipe_id] = self.downloader.load_item(recipe_id, RecipeParser)
+            self.save()
         return self.recipes[recipe_id]
     
     def get_all_recipes(self, skill=None, season_id=None,sort_recipes=False):
