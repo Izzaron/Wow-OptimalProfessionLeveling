@@ -21,12 +21,9 @@ class ItemParser:
 
         #search for name: WH.TERMS.createdby,
         created_by = None
-        pattern = re.compile(r'name: WH.TERMS.createdby,')
+        pattern = re.compile(r'WH\.TERMS\.createdby.*?"id":(\d+),.*?\}\)\;', re.DOTALL)
         match = pattern.search(content)
         if match:
-            pattern = re.compile(r'WH\.TERMS\.createdby.*?"id":(\d+),.*?\}\)\;', re.DOTALL)
-            match = pattern.search(content)
-            if match:
-                created_by = int(match.group(1))
+            created_by = int(match.group(1))
 
         return Item(item_id, js['name'], js['jsonequip']['sellprice'], created_by)
