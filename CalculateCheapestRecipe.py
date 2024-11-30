@@ -34,8 +34,8 @@ class RecipeValuator:
             nr_required = ceil(1/probability)
             price = price * nr_required
             if cheapest == None or price < cheapest[0]:
-                cheapest = (price,recipe)
-        return (nr_required,cheapest[1])
+                cheapest = (price,recipe,nr_required)
+        return (cheapest[2],cheapest[1])
 
     @staticmethod
     def get_levelup_probability(colors,level):
