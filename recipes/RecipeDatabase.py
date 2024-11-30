@@ -12,7 +12,7 @@ class RecipeDatabase:
         self.recipes: Dict[int, Recipe] = dict()
         self.load()
         self.downloader = ItemDataDownloader()
-        # print(f"Loaded {len(self.recipes)} recipes from {self.file_path}")
+        print(f"Loaded {len(self.recipes)} recipes from {self.file_path}")
 
     def load(self):
         # Load items from a JSON file

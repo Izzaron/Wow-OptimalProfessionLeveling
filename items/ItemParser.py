@@ -26,4 +26,9 @@ class ItemParser:
         if match:
             created_by = int(match.group(1))
 
-        return Item(item_id, js['name'], js['jsonequip']['sellprice'], created_by)
+        if 'jsonequip' in js and 'sellprice' in js['jsonequip']:
+            sell_price = js['jsonequip']['sellprice']
+        else:
+            sell_price = 0
+
+        return Item(item_id, js['name'], sell_price, created_by)

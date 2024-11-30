@@ -13,7 +13,7 @@ class ItemDatabase:
         self.items: Dict[int, Item] = dict()
         self.load()
         self.downloader = ItemDataDownloader()
-        # print(f"Loaded {len(self.items)} items from {self.file_path}")
+        print(f"Loaded {len(self.items)} items from {self.file_path}")
     
     def load(self):
         # Load items from a JSON file
