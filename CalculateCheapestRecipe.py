@@ -61,7 +61,7 @@ class RecipeValuator:
         return cost
 
     def get_reagent_cost(self,reagent_id):
-        item = self.item_db.get_tem(reagent_id)
+        item = self.item_db.get_item(reagent_id)
         if item.created_by:
             recipe = self.recipe_db.get_recipe(item.created_by)
             if recipe.skill in self.known_professions:
@@ -77,7 +77,7 @@ class RecipeValuator:
         reagents = recipe.reagents.items()
         reagent_list = defaultdict(int)
         for reagent_id,amount in reagents:
-            item = self.item_db.get_tem(reagent_id)
+            item = self.item_db.get_item(reagent_id)
             if item.created_by:
                 recipe = self.recipe_db.get_recipe(item.created_by)
                 if recipe.skill in self.known_professions:

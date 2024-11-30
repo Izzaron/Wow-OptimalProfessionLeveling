@@ -34,7 +34,7 @@ class ItemDatabase:
     def count(self):
         return len(self.items)
 
-    def get_tem(self, item_id) -> Item:
+    def get_item(self, item_id) -> Item:
         item_id = int(item_id)
         # Return an item by its ID
         if item_id not in self.items:
@@ -55,8 +55,11 @@ class ItemDatabase:
             for reagent_id, amount in reagents.items():
                 item.reagents[reagent_id] = amount
     
-    def set_price(self, item_id, price):
-        item = self.get_tem(item_id)
+    def set_price(self, item_id: int, price: int):
+        item = self.get_item(item_id)
         item.price = price
         self.items[item_id] = item
         self.save()
+
+    def get_all_items(self):
+        return self.items.values()
