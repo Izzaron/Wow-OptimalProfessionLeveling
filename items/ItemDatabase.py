@@ -34,7 +34,7 @@ class ItemDatabase:
     def count(self):
         return len(self.items)
 
-    def getItem(self, item_id) -> Item:
+    def get_tem(self, item_id) -> Item:
         item_id = int(item_id)
         # Return an item by its ID
         if item_id not in self.items:
@@ -43,7 +43,7 @@ class ItemDatabase:
             self.save()
         return self.items[item_id]
     
-    def addItem(self, item: Item, reagents=None):
+    def add_item(self, item: Item, reagents=None):
         if item.item_id in self.items:
             return
             #raise Exception(f"Item {item.id} already exists")
@@ -54,3 +54,9 @@ class ItemDatabase:
         if reagents and isinstance(reagents, dict):
             for reagent_id, amount in reagents.items():
                 item.reagents[reagent_id] = amount
+    
+    def set_price(self, item_id, price):
+        item = self.get_tem(item_id)
+        item.price = price
+        self.items[item_id] = item
+        self.save()
