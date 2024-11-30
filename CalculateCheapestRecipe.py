@@ -5,11 +5,6 @@ from math import ceil
 from items.ItemDatabase import ItemDatabase
 from recipes.RecipeDatabase import RecipeDatabase
 from PriceFormatter import format_copper_price
-
-def open_json(file_path):
-    with open(file_path, 'r', encoding='utf-8') as file:
-        content = file.read()
-    return json.loads(content)
     
 class RecipeValuator:
     def __init__(self, known_professions=None):
@@ -25,11 +20,13 @@ class RecipeValuator:
         #333 is enchanting
         self.known_professions = known_professions
 
-    def get_cheapest_recipe_for_level(self, level: int):
+    def get_cheapest_recipe_for_level(self, level: int, print_candidates=False):
         candidates = self.get_candidate_recipes(level)
         cheapest = None
         for recipe in candidates:
             price = self.get_recipe_cost(recipe)
+            if print_candidates:
+                print('Price for',recipe.name,'is',format_copper_price(price))
             probability = RecipeValuator.get_levelup_probability(recipe.colors,level)
             nr_required = ceil(1/probability)
             price = price * nr_required
@@ -90,21 +87,22 @@ class RecipeValuator:
                 reagent_list[item.item_id] += amount
         return reagent_list
 
-    @staticmethod
-    def print_recipe(recipe):
-        print(recipe.name,end=' ')
-        print(f"\033[38;2;255;128;64m{recipe.colors[0]}\033[0m",end=' ') #ff8040
-        print(f"\033[38;2;255;255;0m{recipe.colors[1]}\033[0m",end=' ') #ffff00
-        print(f"\033[38;2;64;191;64m{recipe.colors[2]}\033[0m",end=' ') #40bf40
-        print(f"\033[38;2;128;128;128m{recipe.colors[3]}\033[0m",end=' ') #808080
-        print('')
-
 if __name__ == '__main__':
 
     rv = RecipeValuator([164,186])
 
-    times,recipe = rv.get_cheapest_recipe_for_level(150)
-    print('Best recipe for level 150:',times,'x',recipe.name)
-    RecipeValuator.print_recipe(recipe)
-    for reagent,amount in rv.get_all_recipe_reagents(recipe).items():
-        print(times*amount,'x',rv.item_db.get_tem(reagent).name)
+    mats_total = defaultdict(int)
+    for lvl in range(30,65):
+        times,recipe = rv.get_cheapest_recipe_for_level(lvl)
+        mats_total[recipe.recipe_id] += times
+        # print(f'Best recipe for level {lvl}: {times} x {recipe.name}')
+        # print(recipe)
+        # for reagent,amount in rv.get_all_recipe_reagents(recipe).items():
+        #     print(times*amount,'x',rv.item_db.get_tem(reagent))
+    
+    for recipe_id,times in mats_total.items():
+        recipe = rv.recipe_db.get_recipe(recipe_id)
+        print(times,'x',recipe)
+        for reagent,amount in rv.get_all_recipe_reagents(recipe).items():
+            print(times*amount,'x',rv.item_db.get_item(reagent))
+        print()
