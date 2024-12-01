@@ -32,9 +32,9 @@ if __name__ == "__main__":
     for recipe_id,amount in armorsmith_recipes.items():
         recipe = rv.recipe_db.get_recipe(recipe_id)
         reagents = rv.get_all_recipe_reagents(recipe)
-        for reagent_id,amount in reagents.items():
+        for reagent_id,sub_amount in reagents.items():
             item = rv.item_db.get_item(reagent_id)
-            mats_total[item.item_id] += amount
+            mats_total[item.item_id] += sub_amount*amount
 
     for item_id,amount in additional_items.items():
         item = rv.item_db.get_item(item_id)
